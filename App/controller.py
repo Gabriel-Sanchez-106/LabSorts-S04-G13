@@ -23,7 +23,7 @@
 import config as cf
 import model
 import csv
-
+from DISClib.ADT import list as lt
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -59,7 +59,7 @@ def loadBooks(catalog):
     cada uno de ellos, se crea en la lista de autores, a dicho autor y una
     referencia al libro que se esta procesando.
     """
-    booksfile = cf.data_dir + 'GoodReads/books-small.csv'
+    booksfile = cf.data_dir + 'GoodReads/books.csv'
     input_file = csv.DictReader(open(booksfile, encoding='utf-8'))
     for book in input_file:
         model.addBook(catalog, book)
@@ -79,7 +79,7 @@ def loadBooksTags(catalog):
     """
     Carga la información que asocia tags con libros.
     """
-    booktagsfile = cf.data_dir + 'GoodReads/book_tags-small.csv'
+    booktagsfile = cf.data_dir + 'GoodReads/book_tags.csv'
     input_file = csv.DictReader(open(booktagsfile, encoding='utf-8'))
     for booktag in input_file:
         model.addBookTag(catalog, booktag)
@@ -117,3 +117,14 @@ def countBooksByTag(catalog, tag):
     Retorna los libros que fueron etiquetados con el tag
     """
     return model.countBooksByTag(catalog, tag)
+
+def printResults(ord_books, sample=10):
+    size = lt.size(ord_books)
+    if size > sample:
+        print("Los primeros ", sample, " libros ordenados son:")
+    i=0
+    while i <= sample:
+        book = lt.getElement(ord_books,i)
+        print('Titulo: ' + book['title'] + ' ISBN: ' +
+            book['isbn'] + ' Rating: ' + book['average_rating'])
+        i+=1
